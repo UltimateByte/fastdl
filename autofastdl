@@ -43,7 +43,7 @@ fi
 
 # User confirmation for starting process
 while true; do
-	read -p "Do you wish to continue? [y/N]" yn
+	read -p "Continue? [y/N]" yn
 	case $yn in
 	[Yy]* ) break;;
 	[Nn]* ) exit;;
@@ -59,7 +59,7 @@ if [ "$bzip2" = 0 ]; then
 	echo "WARNING bzip2 is not installed"
 	echo "You can still continue but loading time won't be as best as possible for your players"
 	while true; do
-		read -p "Do you wish to continue? [y/N]" yn
+		read -p "Continue? [y/N]" yn
 		case $yn in
 		[Yy]* ) break;;
 		[Nn]* ) exit;;
@@ -129,21 +129,23 @@ cd "${rootdir}"
 # Correct addons folder structure
 # Create FastDL folder if it doesn't exit
 if [ -d "$fastdl/addons" ]; then
-	echo "Moving addons' FastDL files to their correct folder"
+	echo "Possible FastDL files found into addons"
+	echo "Moving those files to their correct folder"
 	sleep 2
 	cp -Rf ${fastdl}/addons/*/* ${fastdl}
 	rm -R ${fastdl}/addons
-	echo "Addons content moved if present"
+	echo "Done"
 	sleep 1
 fi
 
 # Correct content that may be into a lua folder by mistake like darkrpmodification
 if [ -d "$fastdl/lua" ]; then
-	echo "Correcting possible resources in lua folders like for darkrpmodification"
+	echo "Possible FastDL files found into a lua folder"
+	echo "Moving those files to their correct folder"
 	sleep 2
 	cp -Rf ${fastdl}/lua/* ${fastdl}
 	echo "Done"
-	sleep 2
+	sleep 1
 fi
 
 
@@ -162,13 +164,13 @@ fi
 
 # Files Compression with bzip2
 # User confirmation for bzip2
-
+echo "----------------------------------"
 echo "FastDL will now compress files using bzip2"
 sleep 1
 echo "It may take a while..."
 sleep 1
 while true; do
-	read -p "Do you wish to continue? [y/N]" yn
+	read -p "Continue? [y/N]" yn
 	case $yn in
 	[Yy]* ) break;;
 	[Nn]* ) exit;;
