@@ -3,7 +3,7 @@
 # FastDL Creator
 # Author : Robin Labadie aka UltimateByte
 # Website : http://www.lrob.fr for http://www.mesnie.org
-# Version : 1.0
+# Version : 1.1
 
 # README
 # This script is intended to work only for Valve SRCDS (Source) servers using Daniel Gibbs Linux Game Servers Management script
@@ -83,39 +83,39 @@ cd "${serverdir}"
 # Map Files
 echo "Copying map files"
 sleep 1
-find . -name '*.bsp' | cpio -pdmu "${fastdl}"
+find . -name '*.bsp' | cpio -updm "${fastdl}"
 
 # Materials
 echo "Copying Materials"
 sleep 1
-find . -name '*.vtf' | cpio -pdmu "${fastdl}"
-find . -name '*.vmt' | cpio -pdmu "${fastdl}"
+find . -name '*.vtf' | cpio -updm "${fastdl}"
+find . -name '*.vmt' | cpio -updm "${fastdl}"
 
 # Models
 echo "Copying Models"
 sleep 1
-find . -name '*.vtx' | cpio -pdmu "${fastdl}"
-find . -name '*.vvd' | cpio -pdmu "${fastdl}"
-find . -name '*.mdl' | cpio -pdmu "${fastdl}"
-find . -name '*.phy' | cpio -pdmu "${fastdl}"
-find . -name '*.vvd' | cpio -pdmu "${fastdl}"
+find . -name '*.vtx' | cpio -updm "${fastdl}"
+find . -name '*.vvd' | cpio -updm "${fastdl}"
+find . -name '*.mdl' | cpio -updm "${fastdl}"
+find . -name '*.phy' | cpio -updm "${fastdl}"
+find . -name '*.vvd' | cpio -updm "${fastdl}"
 
 # Particles
 echo "Copying Paricles"
 sleep 1
-find . -name '*.pcf' | cpio -pdmu "${fastdl}"
+find . -name '*.pcf' | cpio -updm "${fastdl}"
 
 # Sounds
 echo "Copying Sounds"
 sleep 1
-find . -name '*.wav' | cpio -pdmu "${fastdl}"
-find . -name '*.mp3' | cpio -pdmu "${fastdl}"
+find . -name '*.wav' | cpio -updm "${fastdl}"
+find . -name '*.mp3' | cpio -updm "${fastdl}"
 
 # Resources (mostly fonts)
 echo "Copying Resources (mostly fonts)"
 sleep 1
-find . -name '*.otf' | cpio -pdmu "${fastdl}"
-find . -name '*.ttf' | cpio -pdmu "${fastdl}"
+find . -name '*.otf' | cpio -updm "${fastdl}"
+find . -name '*.ttf' | cpio -updm "${fastdl}"
 
 # Finished copying resources
 echo "Done"
@@ -128,10 +128,8 @@ cd "${rootdir}"
 echo "Moving addons' FastDL files to their correct folder"
 sleep 2
 mv -f "${fastdl}/addons/*/*" "${fastdl}"
-rm -R "${fastdl}/addons"
 echo "Done"
 sleep 1
-
 
 # Correct content that may be into a lua folder by mistake like darkrpmodification
 echo "Correcting possible resources in lua folders like for darkrpmodification"
@@ -143,9 +141,13 @@ sleep 2
 # bzip2 compression
 # End if bzip2 not installed
 if [ "$bzip2" = 0 ]; then
-	echo "Done, now please configure your HTTP server to target the fastdl folder that was created"
+	echo "----------------------------------"
+	echo "Congratulations, it's done"
+	echo "Now you should configure your HTTP server to target the fastdl folder that was created"
+	echo "Or copy files to an external server"
 	echo "Don't forget to change your sv_downloadurl in server configuration"
-	sleep 2
+	echo "By the way, you'd better install bzip2 an re-run this script"
+	echo "----------------------------------"
 	exit
 fi
 
@@ -153,6 +155,9 @@ fi
 # User confirmation for bzip2
 
 echo "FastDL will now compress files using bzip2"
+sleep 1
+echo "It may take a while..."
+sleep 1
 while true; do
 	read -p "Do you wish to continue? [y/N]" yn
 	case $yn in
@@ -162,11 +167,15 @@ while true; do
 	esac
 done
 
-# bzip2 all files that are not already compressed
-find "$fastdl" -not -name \*.bz2 -exec bzip2 \{\} \;
+# bzip2 all files that are not already compressed (keeping original files)
+find "$fastdl" -not -name \*.bz2 -exec bzip2 -k \{\} \;
 echo "bzip2 compression done"
 sleep 1
-echo "Now please configure your HTTP server to target the fastdl folder that was created"
+
+echo "----------------------------------"
+echo "Congratulations, it's done"
+echo "Now you should configure your HTTP server to target the fastdl folder that was created"
+echo "Or copy files to an external server"
 echo "Don't forget to change your sv_downloadurl in server configuration"
-sleep 2
+echo "----------------------------------"
 exit
