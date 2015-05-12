@@ -1,7 +1,7 @@
 #!/bin/bash
 # SRCDS Server
 # FastDL Creator
-# Author : Robin Labadie
+# Author : Robin Labadie aka UltimateByte
 # Website : http://www.lrob.fr for http://www.mesnie.org
 # Version : 1.0
 
@@ -9,18 +9,15 @@
 # This script is intended to work only for Valve SRCDS (Source) servers using Daniel Gibbs Linux Game Servers Management script
 # It's been tested for Debian 8 but other debian and distros should also work
 # After running this, you have to setup an HTTP server pointing to the fastdl folder that will be created
-# Of course, you will also have to change your server configuration
+# Of course, you will also have to change your server configuration's sv_downloadurl
 # If my work helped you, please consider making a donation on www.mesnie.org
 
 
 # CONFIGURATION
-
 # The SRCDS name of the game
 gamename="garrysmod"
-
 # Enable/disable b2zip compression (1 enabled, 0 disabled)
 b2zip="1"
-
 
 
 # SCRIPT 
@@ -32,7 +29,7 @@ fastdl="${rootdir}/fastdl"
 addons="${serverdir}/addons"
 
 # Welcome message
-echo "You're up to create a fastdl folder where the script is located"
+echo "Welcome to FastDL folder Creator"
 echo "Checking configuration..."
 sleep 2
 
@@ -42,36 +39,60 @@ sleep 2
 if [ -d $serverdir ]; then
 	echo "Your lgsm installation and script configuration seems fine"
 else 
-	echo "Your lgsm installation was not found"
+	# Force aborting
+	echo "Sorry, your lgsm installation was not found"
 	echo "Please make sure to read the README at the beginning of the script"
-	echo "Script will now exit..."
 	sleep 2
 	exit
 fi 
 
-
-echo -e "Continue ? y or n"
-
+# User confirmation
+while true; do
+    read -p "Do you wish to continue? [y/N]" yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 
 
 # Coding note : find /folder/subfolder -not -name \*.bz2 -exec bzip2 \{\} \;
 
+# Copying all requesting files
+echo "Gathering all needed FastDL files"
+sleep 1
+
 # Map Files
-echo Copying map files
+echo "Copying map files"
 find ${serverdir} -name '*.bsp' | cpio -pdm ${fastdl}
 
-# 
-find ${serverdir} -name '*.otf' | cpio -pdm ${fastdl}
-
-find ${serverdir} -name '*.ttf' | cpio -pdm ${fastdl}
+# Materials
+echo "Copying Materials"
 find ${serverdir} -name '*.vtf' | cpio -pdm ${fastdl}
-
-
 find ${serverdir} -name '*.vmt' | cpio -pdm ${fastdl}
-find ${serverdir} -name '*.vvd' | cpio -pdm ${fastdl}
+
+# Models
+echo "Copying Models"
 find ${serverdir} -name '*.vtx' | cpio -pdm ${fastdl}
-find ${serverdir} -name '*.phy' | cpio -pdm ${fastdl}
+find ${serverdir} -name '*.vvd' | cpio -pdm ${fastdl}
 find ${serverdir} -name '*.mdl' | cpio -pdm ${fastdl}
+find ${serverdir} -name '*.phy' | cpio -pdm ${fastdl}
+find ${serverdir} -name '*.vvd' | cpio -pdm ${fastdl}
 
 # Particles
-# .pcf
+echo "Copying Paricles"
+find ${serverdir} -name '*.pcf' | cpio -pdm ${fastdl}
+
+# Sounds
+echo "Copying Sounds"
+find ${serverdir} -name '*.wav' | cpio -pdm ${fastdl}
+find ${serverdir} -name '*.mp3' | cpio -pdm ${fastdl}
+
+# Resources (mostly fonts)
+echo "Copying Resources (mostly fonts)"
+find ${serverdir} -name '*.otf' | cpio -pdm ${fastdl}
+find ${serverdir} -name '*.ttf' | cpio -pdm ${fastdl}
+
+
+
