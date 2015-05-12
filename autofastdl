@@ -109,7 +109,7 @@ echo "Done"
 sleep 1
 
 # Particles
-echo "Copying Paricles"
+echo "Copying Particles"
 sleep 1
 find . -name '*.pcf' | cpio -updm "${fastdl}"
 echo "Done"
