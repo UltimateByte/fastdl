@@ -16,12 +16,9 @@
 # CONFIGURATION
 # The SRCDS name of the game
 gamename="garrysmod"
-# Enable/disable b2zip compression (1 enabled, 0 disabled)
-b2zip="1"
 
 
 # SCRIPT 
-
 # Directories
 rootdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 serverdir="${rootdir}/serverfiles/${gamename}"
@@ -33,40 +30,53 @@ echo "Welcome to FastDL folder Creator"
 echo "Checking configuration..."
 sleep 2
 
-
-
-# Check if lgsm directories seems to exists and be standard
-if [ -d $serverdir ]; then
-	echo "Your lgsm installation and script configuration seems fine"
+# Check if lgsm directories seems to exists and be standard, if not, exit
+if [ -d "$serverdir" ]; then
+	echo "Good, your lgsm installation and script configuration are fine"
 else 
-	# Force aborting
 	echo "Sorry, your lgsm installation was not found"
 	echo "Please make sure to read the README at the beginning of the script"
 	sleep 2
 	exit
 fi 
 
-# User confirmation
+
+# User confirmation for starting process
 while true; do
-    read -p "Do you wish to continue? [y/N]" yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
+	read -p "Do you wish to continue? [y/N]" yn
+	case $yn in
+	[Yy]* ) break;;
+	[Nn]* ) exit;;
+	* ) echo "Please answer yes or no.";;
+	esac
 done
 
-# Create fastdl folder if doesn't exit
-if [ ! -d $fastdl ]; then
-	mkdir "${fastdl}"
+# Check if bzip2 is installed
+bzip2="dpkg-query -l | grep bzip2 | wc -l"
+
+# Warning if bzip2 is not installed
+if [ "$bzip2" = 0 ]; then
+	echo "WARNING bzip2 is not installed"
+	echo "You can still continue but loading time won't be as best as possible for your players"
+	while true; do
+		read -p "Do you wish to continue? [y/N]" yn
+		case $yn in
+		[Yy]* ) break;;
+		[Nn]* ) exit;;
+		* ) echo "Please answer yes or no.";;
+		esac
+	done
+fi
+
+# Create FastDL folder if it doesn't exit
+if [ ! -d "$fastdl" ]; then
+	mkdir -v "${fastdl}"
 fi
 
 
-
-
-# Copying all requesting files
-echo "Gathering all needed FastDL files"
-sleep 1
+# Copying all needed files for fastDL
+echo "Gathering all needed FastDL files..."
+sleep 2
 
 # Map Files
 echo "Copying map files"
@@ -74,46 +84,70 @@ find ${serverdir} -name '*.bsp' | cpio -pdm ${fastdl}
 
 # Materials
 echo "Copying Materials"
-find ${serverdir} -name '*.vtf' | cpio -pdm ${fastdl}
-find ${serverdir} -name '*.vmt' | cpio -pdm ${fastdl}
+find "${serverdir}" -name '*.vtf' | cpio -pdm "${fastdl}"
+find "${serverdir}" -name '*.vmt' | cpio -pdm "${fastdl}"
 
 # Models
 echo "Copying Models"
-find ${serverdir} -name '*.vtx' | cpio -pdm ${fastdl}
-find ${serverdir} -name '*.vvd' | cpio -pdm ${fastdl}
-find ${serverdir} -name '*.mdl' | cpio -pdm ${fastdl}
-find ${serverdir} -name '*.phy' | cpio -pdm ${fastdl}
-find ${serverdir} -name '*.vvd' | cpio -pdm ${fastdl}
+find "${serverdir}" -name '*.vtx' | cpio -pdm "${fastdl}"
+find "${serverdir}" -name '*.vvd' | cpio -pdm "${fastdl}"
+find "${serverdir}" -name '*.mdl' | cpio -pdm "${fastdl}"
+find "${serverdir}" -name '*.phy' | cpio -pdm "${fastdl}"
+find "${serverdir}" -name '*.vvd' | cpio -pdm "${fastdl}"
 
 # Particles
 echo "Copying Paricles"
-find ${serverdir} -name '*.pcf' | cpio -pdm ${fastdl}
+find "${serverdir}" -name '*.pcf' | cpio -pdm "${fastdl}"
 
 # Sounds
 echo "Copying Sounds"
-find ${serverdir} -name '*.wav' | cpio -pdm ${fastdl}
-find ${serverdir} -name '*.mp3' | cpio -pdm ${fastdl}
+find "${serverdir}" -name '*.wav' | cpio -pdm "${fastdl}"
+find "${serverdir}" -name '*.mp3' | cpio -pdm "${fastdl}"
 
 # Resources (mostly fonts)
 echo "Copying Resources (mostly fonts)"
-find ${serverdir} -name '*.otf' | cpio -pdm ${fastdl}
-find ${serverdir} -name '*.ttf' | cpio -pdm ${fastdl}
+find "${serverdir}" -name '*.otf' | cpio -pdm "${fastdl}"
+find "${serverdir}" -name '*.ttf' | cpio -pdm "${fastdl}"
 
 echo "Done"
 pause 1
 
 # Correcting addons folder structure
 echo "Moving addons' FastDL files to their correct folder"
-pause 1
+pause 2
 mv -f "${fastdl}/addons/*/*" "${fastdl}"
 rm -R "${fastdl}/addons"
 
-# Correcting contents that may be into a lua folder by mistake like darkrpmodifications
-echo "Correcting possible resources in lua folders"
+# Correcting content that may be into a lua folder by mistake like darkrpmodification
+echo "Correcting possible resources in lua folders like for darkrpmodification"
 pause 1
-mv -f "${fastdl}/lua/*" "${fastdl}"
-rm -R "${fastdl}/lua"
+cp -Rf "${fastdl}/lua/*" "${fastdl}"
 
+# bzip2 compression
+# End if bzip2 not installed
+if [ "$bzip2" = 0 ]; then
+	echo "Done, now please configure your HTTP server to target the fastdl folder that was created"
+	echo "Don't forget to change your sv_downloadurl in server configuration"
+	sleep 2
+	exit
+fi
 
+# Files Compression with bzip2
+# User confirmation for bzip2
 
-# Coding note : find /folder/subfolder -not -name \*.bz2 -exec bzip2 \{\} \;
+echo "FastDL will now compress files using bzip2"
+while true; do
+	read -p "Do you wish to continue? [y/N]" yn
+	case $yn in
+	[Yy]* ) break;;
+	[Nn]* ) exit;;
+	* ) echo "Please answer yes or no.";;
+	esac
+done
+
+find "$fastdl" -not -name \*.bz2 -exec bzip2 \{\} \;
+echo "bzip2 compression done"
+echo "Now please configure your HTTP server to target the fastdl folder that was created"
+echo "Don't forget to change your sv_downloadurl in server configuration"
+sleep 2
+exit
