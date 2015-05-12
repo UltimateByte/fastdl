@@ -116,17 +116,17 @@ find "${serverdir}" -name '*.otf' | cpio -pdmu "${fastdl}"
 find "${serverdir}" -name '*.ttf' | cpio -pdmu "${fastdl}"
 
 echo "Done"
-pause 2
+sleep 2
 
 # Correct addons folder structure
 echo "Moving addons' FastDL files to their correct folder"
-pause 2
+sleep 2
 mv -f "${fastdl}/addons/*/*" "${fastdl}"
 rm -R "${fastdl}/addons"
 
 # Correct content that may be into a lua folder by mistake like darkrpmodification
 echo "Correcting possible resources in lua folders like for darkrpmodification"
-pause 1
+sleep 1
 cp -Rf "${fastdl}/lua/*" "${fastdl}"
 
 # bzip2 compression
