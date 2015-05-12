@@ -145,8 +145,10 @@ while true; do
 	esac
 done
 
+# bzip2 all files that are not already compressed
 find "$fastdl" -not -name \*.bz2 -exec bzip2 \{\} \;
 echo "bzip2 compression done"
+sleep 1
 echo "Now please configure your HTTP server to target the fastdl folder that was created"
 echo "Don't forget to change your sv_downloadurl in server configuration"
 sleep 2
