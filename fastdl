@@ -56,8 +56,13 @@ while true; do
     esac
 done
 
+# Create fastdl folder if doesn't exit
+if [ ! -d $fastdl ]; then
+	mkdir "${fastdl}"
+fi
 
-# Coding note : find /folder/subfolder -not -name \*.bz2 -exec bzip2 \{\} \;
+
+
 
 # Copying all requesting files
 echo "Gathering all needed FastDL files"
@@ -94,5 +99,21 @@ echo "Copying Resources (mostly fonts)"
 find ${serverdir} -name '*.otf' | cpio -pdm ${fastdl}
 find ${serverdir} -name '*.ttf' | cpio -pdm ${fastdl}
 
+echo "Done"
+pause 1
+
+# Correcting addons folder structure
+echo "Moving addons' FastDL files to their correct folder"
+pause 1
+mv -f "${fastdl}/addons/*/*" "${fastdl}"
+rm -R "${fastdl}/addons"
+
+# Correcting contents that may be into a lua folder by mistake like darkrpmodifications
+echo "Correcting possible resources in lua folders"
+pause 1
+mv -f "${fastdl}/lua/*" "${fastdl}"
+rm -R "${fastdl}/lua"
 
 
+
+# Coding note : find /folder/subfolder -not -name \*.bz2 -exec bzip2 \{\} \;
