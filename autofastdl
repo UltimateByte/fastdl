@@ -78,6 +78,8 @@ fi
 echo "Gathering all needed FastDL files..."
 sleep 2
 
+cd "${serverdir}"
+
 # Map Files
 echo "Copying map files"
 sleep 1
@@ -115,6 +117,7 @@ sleep 1
 find "${serverdir}" -name '*.otf' | cpio -pdmu "${fastdl}"
 find "${serverdir}" -name '*.ttf' | cpio -pdmu "${fastdl}"
 
+cd "${rootdir}"
 echo "Done"
 sleep 2
 
@@ -123,10 +126,12 @@ echo "Moving addons' FastDL files to their correct folder"
 sleep 2
 mv -f "${fastdl}/addons/*/*" "${fastdl}"
 rm -R "${fastdl}/addons"
+echo "Done"
+sleep 1
 
 # Correct content that may be into a lua folder by mistake like darkrpmodification
 echo "Correcting possible resources in lua folders like for darkrpmodification"
-sleep 1
+sleep 2
 cp -Rf "${fastdl}/lua/*" "${fastdl}"
 
 # bzip2 compression
