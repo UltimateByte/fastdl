@@ -131,13 +131,8 @@ find . -name '*.ttf' | cpio -updm "${fastdl}"
 echo "Done"
 sleep 1
 
-# Finished copying resources
-echo "Done"
-sleep 2
-
 # Going back to scriptfolder to avoid mistakes
 cd "${rootdir}"
-
 
 # Correct addons folder structure
 # Create FastDL folder if it doesn't exit
@@ -160,7 +155,6 @@ if [ -d "$fastdl/lua" ]; then
 	echo "Done"
 	sleep 1
 fi
-
 
 # bzip2 compression
 # End if bzip2 not installed
