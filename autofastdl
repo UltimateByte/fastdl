@@ -83,43 +83,46 @@ cd "${serverdir}"
 # Map Files
 echo "Copying map files"
 sleep 1
-find "${serverdir}" -name '*.bsp' | cpio -pdmu "${fastdl}"
+find . -name '*.bsp' | cpio -pdmu "${fastdl}"
 
 # Materials
 echo "Copying Materials"
 sleep 1
-find "${serverdir}" -name '*.vtf' | cpio -pdmu "${fastdl}"
-find "${serverdir}" -name '*.vmt' | cpio -pdmu "${fastdl}"
+find . -name '*.vtf' | cpio -pdmu "${fastdl}"
+find . -name '*.vmt' | cpio -pdmu "${fastdl}"
 
 # Models
 echo "Copying Models"
 sleep 1
-find "${serverdir}" -name '*.vtx' | cpio -pdmu "${fastdl}"
-find "${serverdir}" -name '*.vvd' | cpio -pdmu "${fastdl}"
-find "${serverdir}" -name '*.mdl' | cpio -pdmu "${fastdl}"
-find "${serverdir}" -name '*.phy' | cpio -pdmu "${fastdl}"
-find "${serverdir}" -name '*.vvd' | cpio -pdmu "${fastdl}"
+find . -name '*.vtx' | cpio -pdmu "${fastdl}"
+find . -name '*.vvd' | cpio -pdmu "${fastdl}"
+find . -name '*.mdl' | cpio -pdmu "${fastdl}"
+find . -name '*.phy' | cpio -pdmu "${fastdl}"
+find . -name '*.vvd' | cpio -pdmu "${fastdl}"
 
 # Particles
 echo "Copying Paricles"
 sleep 1
-find "${serverdir}" -name '*.pcf' | cpio -pdmu "${fastdl}"
+find . -name '*.pcf' | cpio -pdmu "${fastdl}"
 
 # Sounds
 echo "Copying Sounds"
 sleep 1
-find "${serverdir}" -name '*.wav' | cpio -pdmu "${fastdl}"
-find "${serverdir}" -name '*.mp3' | cpio -pdmu "${fastdl}"
+find . -name '*.wav' | cpio -pdmu "${fastdl}"
+find . -name '*.mp3' | cpio -pdmu "${fastdl}"
 
 # Resources (mostly fonts)
 echo "Copying Resources (mostly fonts)"
 sleep 1
-find "${serverdir}" -name '*.otf' | cpio -pdmu "${fastdl}"
-find "${serverdir}" -name '*.ttf' | cpio -pdmu "${fastdl}"
+find . -name '*.otf' | cpio -pdmu "${fastdl}"
+find . -name '*.ttf' | cpio -pdmu "${fastdl}"
 
-cd "${rootdir}"
+# Finished copying resources
 echo "Done"
 sleep 2
+
+# Going back to scriptfolder to avoid mistakes
+cd "${rootdir}"
 
 # Correct addons folder structure
 echo "Moving addons' FastDL files to their correct folder"
@@ -129,10 +132,13 @@ rm -R "${fastdl}/addons"
 echo "Done"
 sleep 1
 
+
 # Correct content that may be into a lua folder by mistake like darkrpmodification
 echo "Correcting possible resources in lua folders like for darkrpmodification"
 sleep 2
 cp -Rf "${fastdl}/lua/*" "${fastdl}"
+echo "Done"
+sleep 2
 
 # bzip2 compression
 # End if bzip2 not installed
