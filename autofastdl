@@ -80,37 +80,43 @@ sleep 2
 
 # Map Files
 echo "Copying map files"
-find ${serverdir} -name '*.bsp' | cpio -pdm ${fastdl}
+sleep 1
+find "${serverdir}" -name '*.bsp' | cpio -pdmu "${fastdl}"
 
 # Materials
 echo "Copying Materials"
-find "${serverdir}" -name '*.vtf' | cpio -pdm "${fastdl}"
-find "${serverdir}" -name '*.vmt' | cpio -pdm "${fastdl}"
+sleep 1
+find "${serverdir}" -name '*.vtf' | cpio -pdmu "${fastdl}"
+find "${serverdir}" -name '*.vmt' | cpio -pdmu "${fastdl}"
 
 # Models
 echo "Copying Models"
-find "${serverdir}" -name '*.vtx' | cpio -pdm "${fastdl}"
-find "${serverdir}" -name '*.vvd' | cpio -pdm "${fastdl}"
-find "${serverdir}" -name '*.mdl' | cpio -pdm "${fastdl}"
-find "${serverdir}" -name '*.phy' | cpio -pdm "${fastdl}"
-find "${serverdir}" -name '*.vvd' | cpio -pdm "${fastdl}"
+sleep 1
+find "${serverdir}" -name '*.vtx' | cpio -pdmu "${fastdl}"
+find "${serverdir}" -name '*.vvd' | cpio -pdmu "${fastdl}"
+find "${serverdir}" -name '*.mdl' | cpio -pdmu "${fastdl}"
+find "${serverdir}" -name '*.phy' | cpio -pdmu "${fastdl}"
+find "${serverdir}" -name '*.vvd' | cpio -pdmu "${fastdl}"
 
 # Particles
 echo "Copying Paricles"
-find "${serverdir}" -name '*.pcf' | cpio -pdm "${fastdl}"
+sleep 1
+find "${serverdir}" -name '*.pcf' | cpio -pdmu "${fastdl}"
 
 # Sounds
 echo "Copying Sounds"
-find "${serverdir}" -name '*.wav' | cpio -pdm "${fastdl}"
-find "${serverdir}" -name '*.mp3' | cpio -pdm "${fastdl}"
+sleep 1
+find "${serverdir}" -name '*.wav' | cpio -pdmu "${fastdl}"
+find "${serverdir}" -name '*.mp3' | cpio -pdmu "${fastdl}"
 
 # Resources (mostly fonts)
 echo "Copying Resources (mostly fonts)"
-find "${serverdir}" -name '*.otf' | cpio -pdm "${fastdl}"
-find "${serverdir}" -name '*.ttf' | cpio -pdm "${fastdl}"
+sleep 1
+find "${serverdir}" -name '*.otf' | cpio -pdmu "${fastdl}"
+find "${serverdir}" -name '*.ttf' | cpio -pdmu "${fastdl}"
 
 echo "Done"
-pause 1
+pause 2
 
 # Correct addons folder structure
 echo "Moving addons' FastDL files to their correct folder"
