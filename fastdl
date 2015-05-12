@@ -74,7 +74,7 @@ if [ ! -d "$fastdl" ]; then
 fi
 
 
-# Copying all needed files for fastDL
+# Copy all needed files for fastDL
 echo "Gathering all needed FastDL files..."
 sleep 2
 
@@ -112,13 +112,13 @@ find "${serverdir}" -name '*.ttf' | cpio -pdm "${fastdl}"
 echo "Done"
 pause 1
 
-# Correcting addons folder structure
+# Correct addons folder structure
 echo "Moving addons' FastDL files to their correct folder"
 pause 2
 mv -f "${fastdl}/addons/*/*" "${fastdl}"
 rm -R "${fastdl}/addons"
 
-# Correcting content that may be into a lua folder by mistake like darkrpmodification
+# Correct content that may be into a lua folder by mistake like darkrpmodification
 echo "Correcting possible resources in lua folders like for darkrpmodification"
 pause 1
 cp -Rf "${fastdl}/lua/*" "${fastdl}"
