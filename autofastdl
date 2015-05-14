@@ -3,7 +3,7 @@
 # FastDL Creator
 # Author : Robin Labadie aka UltimateByte
 # Website : http://www.lrob.fr for http://www.mesnie.org
-# Version : 1.1
+# Version : 1.2
 
 # README
 # This script is intended to work only for Valve SRCDS (Source) servers using Daniel Gibbs Linux Game Servers Management script
@@ -53,10 +53,8 @@ while true; do
 done
 
 # Check if bzip2 is installed
-bzip2="dpkg-query -l | grep bzip2 | wc -l"
-
 # Warning if bzip2 is not installed
-if [ "$bzip2" = 0 ]; then
+if [ -z "$(command -v bzip2)" ]; then
 	echo "WARNING bzip2 is not installed"
 	echo "You can still continue but loading time won't be as best as possible for your players"
 	while true; do
