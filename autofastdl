@@ -31,7 +31,7 @@ echo "Checking configuration..."
 sleep 2
 
 # Check if lgsm directories seems to exists and be standard, if not, exit
-if [ -d "$serverdir" ]; then
+if [ -d $serverdir ]; then
 	echo "Good, your lgsm installation and script configuration are fine"
 	echo "Setup will now copy FastDL files into a new folder"
 else 
@@ -52,8 +52,7 @@ while true; do
 	esac
 done
 
-# Check if bzip2 is installed
-# Warning if bzip2 is not installed
+# Check if bzip2 is installed, warning if not
 if [ -z "$(command -v bzip2)" ]; then
 	echo "WARNING bzip2 is not installed"
 	echo "You can still continue but loading time won't be as best as possible for your players"
@@ -68,7 +67,7 @@ if [ -z "$(command -v bzip2)" ]; then
 fi
 
 # Create FastDL folder if it doesn't exit
-if [ ! -d "$fastdl" ]; then
+if [ ! -d $fastdl ]; then
 	mkdir -v "${fastdl}"
 	sleep 1
 fi
@@ -78,59 +77,59 @@ fi
 echo "Gathering all needed FastDL files..."
 sleep 2
 
-cd "${serverdir}"
+cd ${serverdir}
 
 # Map Files
 echo "Copying map files"
 sleep 1
-find . -name '*.bsp' | cpio -updm "${fastdl}"
+find . -name '*.bsp' | cpio -updm ${fastdl}
 echo "Done"
 sleep 1
 
 # Materials
 echo "Copying Materials"
 sleep 1
-find . -name '*.vtf' | cpio -updm "${fastdl}"
-find . -name '*.vmt' | cpio -updm "${fastdl}"
+find . -name '*.vtf' | cpio -updm ${fastdl}
+find . -name '*.vmt' | cpio -updm ${fastdl}
 echo "Done"
 sleep 1
 
 # Models
 echo "Copying Models"
 sleep 1
-find . -name '*.vtx' | cpio -updm "${fastdl}"
-find . -name '*.vvd' | cpio -updm "${fastdl}"
-find . -name '*.mdl' | cpio -updm "${fastdl}"
-find . -name '*.phy' | cpio -updm "${fastdl}"
-find . -name '*.vvd' | cpio -updm "${fastdl}"
+find . -name '*.vtx' | cpio -updm ${fastdl}
+find . -name '*.vvd' | cpio -updm ${fastdl}
+find . -name '*.mdl' | cpio -updm ${fastdl}
+find . -name '*.phy' | cpio -updm ${fastdl}
+find . -name '*.vvd' | cpio -updm ${fastdl}
 echo "Done"
 sleep 1
 
 # Particles
 echo "Copying Particles"
 sleep 1
-find . -name '*.pcf' | cpio -updm "${fastdl}"
+find . -name '*.pcf' | cpio -updm ${fastdl}
 echo "Done"
 sleep 1
 
 # Sounds
 echo "Copying Sounds"
 sleep 1
-find . -name '*.wav' | cpio -updm "${fastdl}"
-find . -name '*.mp3' | cpio -updm "${fastdl}"
+find . -name '*.wav' | cpio -updm ${fastdl}
+find . -name '*.mp3' | cpio -updm ${fastdl}
 echo "Done"
 sleep 1
 
 # Resources (mostly fonts)
 echo "Copying Resources (mostly fonts)"
 sleep 1
-find . -name '*.otf' | cpio -updm "${fastdl}"
-find . -name '*.ttf' | cpio -updm "${fastdl}"
+find . -name '*.otf' | cpio -updm ${fastdl}
+find . -name '*.ttf' | cpio -updm ${fastdl}
 echo "Done"
 sleep 1
 
 # Going back to scriptfolder to avoid mistakes
-cd "${rootdir}"
+cd ${rootdir}
 
 # Correct addons folder structure
 # Create FastDL folder if it doesn't exit
@@ -156,7 +155,7 @@ fi
 
 # bzip2 compression
 # End if bzip2 not installed
-if [ "$bzip2" = 0 ]; then
+if [ -z "$(command -v bzip2)" ]; then
 	echo "----------------------------------"
 	echo "Congratulations, it's done"
 	echo "Now you should configure your HTTP server to target the fastdl folder that was created"
@@ -184,7 +183,7 @@ while true; do
 done
 
 # bzip2 all files that are not already compressed (keeping original files)
-find "$fastdl" -not -name \*.bz2 -exec bzip2 -k \{\} \;
+find $fastdl -not -name \*.bz2 -exec bzip2 -k \{\} \;
 echo "bzip2 compression done"
 sleep 1
 
