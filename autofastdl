@@ -101,7 +101,6 @@ find . -name '*.vtx' | cpio -updm ${fastdl}
 find . -name '*.vvd' | cpio -updm ${fastdl}
 find . -name '*.mdl' | cpio -updm ${fastdl}
 find . -name '*.phy' | cpio -updm ${fastdl}
-find . -name '*.vvd' | cpio -updm ${fastdl}
 echo "Done"
 sleep 1
 
@@ -121,10 +120,11 @@ echo "Done"
 sleep 1
 
 # Resources (mostly fonts)
-echo "Copying Resources (mostly fonts)"
+echo "Copying fonts and png"
 sleep 1
 find . -name '*.otf' | cpio -updm ${fastdl}
 find . -name '*.ttf' | cpio -updm ${fastdl}
+find . -name '*.png' | cpio -updm ${fastdl}
 echo "Done"
 sleep 1
 
