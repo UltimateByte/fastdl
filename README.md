@@ -1,3 +1,6 @@
+# This is now integrated and greatly improved within LinuxGSM itself!
+# This is legacy and outdated!
+
 # fastdl
 A FastDL script, initially made for Gmod and Daniel Gibbs Linux Game Server Manager.
 # Instructions 
